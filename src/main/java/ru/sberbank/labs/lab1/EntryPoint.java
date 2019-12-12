@@ -78,7 +78,7 @@ public class EntryPoint {
 		afterDate = new Date();
 		System.out.println("MyHashMap add time:" + (afterDate.getTime() - currentDate.getTime()));
 		System.out.println("------------------------------------");
-		System.out.println("The end!");
+		System.out.println("The end of time check!");
 
         // 10. Улучшите показатели HashMap на запись, изучив доступные конструкторы HashMap
 		// (Capacity:100001, loadFactor:1) хеширование не произойдет

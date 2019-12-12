@@ -9,7 +9,7 @@ public class MyHashMap<K, V> implements IntMap<V> {
 	private List<MyEntry<K,V>> list;
 	private int size;
 
-	private <K, V> MyHashMap() {
+	<K, V> MyHashMap() {
 		size = 16;
 		list = new ArrayList(size);
 		for(int i = 0; i < size; i++) {
