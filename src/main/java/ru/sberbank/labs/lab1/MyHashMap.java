@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class MyHashMap<K, V> implements IntMap<V> {
-	private List<MyEntry<K,V>> list;
+public class MyHashMap<K, V extends Comparable> implements IntMap<V> {
+	private List<IntEntry<V>> list;
 	private int size;
 
-	<K, V> MyHashMap() {
+	MyHashMap() {
 		size = 16;
-		list = new ArrayList(size);
+		list = new ArrayList<>(size);
 		for(int i = 0; i < size; i++) {
 			list.add(null);
 		}
@@ -20,14 +20,14 @@ public class MyHashMap<K, V> implements IntMap<V> {
 	@Override
 	public V get(int i) {
 		int index = getKey(i);
-		MyEntry<K, V> entry = list.get(index);
+		IntEntry<V> entry = list.get(index);
 		return entry != null ? list.get(index).getValue() : null;
 	}
 
 	@Override
 	public V put(int key, V value) {
 		int index = getKey(key);
-		MyEntry<K,V> entry = new MyEntry(key, value);
+		IntEntry<V> entry = new IntEntry<>(key, value);
 		list.add(index, entry);
 		return value;
 	}
@@ -79,27 +79,5 @@ public class MyHashMap<K, V> implements IntMap<V> {
 
 	private int getKey(Object key) {
 		return Math.abs(key.hashCode() % size); // encrypt the key
-	}
-}
-
-class MyEntry<K,V> {
-	private K key;
-	private V value;
-
-	MyEntry(K key, V value){
-		this.key = key;
-		this.value = value;
-	}
-	public K getKey() {
-		return key;
-	}
-	public void setKey(K key) {
-		this.key = key;
-	}
-	V getValue() {
-		return value;
-	}
-	public void setValue(V value) {
-		this.value = value;
 	}
 }

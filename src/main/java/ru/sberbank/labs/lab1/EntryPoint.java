@@ -17,7 +17,7 @@ public class EntryPoint {
         // Для случайной генерации строковых данных в читаемом виде можно использовать
         // предопределенные массивы строк firstname[] и lastname[]
         // 4. Поместите сгенерированные данные в массив
-		ArrayList<Person> arrayPerson = new ArrayList<Person>(Arrays.asList(comf.generatePerson()));
+		ArrayList<Person> arrayPerson = new ArrayList<>(Arrays.asList(comf.generatePerson()));
 //         5. Создайте массив Long размерностью 100_000
 		int[] integers = new int[arrayPerson.size()];
         // 6. Сгенерируйте 100_000 уникальных случайных чисел в диапазоне (Long.MAX_VALUE, Long.MAX_VALUE)
@@ -32,7 +32,7 @@ public class EntryPoint {
 		}
 //        // Используйте Set<Integer> для обеспечения уникальности создаваемых чисел
 //        // 7. Создайте экземпляры HashMap и TreMap
-        Map<Integer, Person> hashMap = new HashMap<Integer, Person>(100001, 1);
+        Map<Integer, Person> hashMap = new HashMap<>(100001, 1);
         Map<Integer, Person> treeMap = new TreeMap<>();
 //        // 8. Используя созданный массив Integer[] и Person[] поместите
 //        // данные в созданные структуры, измерьте время, затраченное на запись данных для TreeMap и HashMap
@@ -69,7 +69,7 @@ public class EntryPoint {
 
 		System.out.println("------------------------------------");
 
-		MyHashMap<Integer, Person> myHashMap = new MyHashMap<Integer, Person>();
+		MyHashMap<Integer, Person> myHashMap = new MyHashMap<>();
 
 		currentDate = new Date();
 		for (int j = 0; j < arrayPerson.size(); j++) {
