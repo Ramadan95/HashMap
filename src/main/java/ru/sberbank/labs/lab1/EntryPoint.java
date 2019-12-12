@@ -17,6 +17,10 @@ public class EntryPoint {
         // Для случайной генерации строковых данных в читаемом виде можно использовать
         // предопределенные массивы строк firstname[] и lastname[]
         // 4. Поместите сгенерированные данные в массив
+		// TODO
+		// Никогда не объявляй переменные типом реализации при наличии низлежащего интерфейса
+		// В Java это дурной тон
+		// Зачем обернул Arrays.asList в ArrayList? В чем смысл этого действия?
 		ArrayList<Person> arrayPerson = new ArrayList<>(Arrays.asList(comf.generatePerson()));
 //         5. Создайте массив Long размерностью 100_000
 		int[] integers = new int[arrayPerson.size()];
@@ -42,6 +46,9 @@ public class EntryPoint {
 		}
 		System.out.println("Start check time!");
 		System.out.println("------------------------------------");
+		// TODO
+		// Никогда не используй Date. Забудь что такой существует, взгляни на java.time или
+		long ms = System.currentTimeMillis();
 		Date afterDate = new Date();
 		System.out.println("HashMap add time:" + (afterDate.getTime() - currentDate.getTime()));
 

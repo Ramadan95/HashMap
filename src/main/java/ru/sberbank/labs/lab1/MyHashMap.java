@@ -4,7 +4,10 @@ package ru.sberbank.labs.lab1;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+// TODO Итоговое заключение:
+// 1. Все конечно прекрасно, но что будет если 2 ключа имеют одинаковый хэш
+// 2. Попробуй использовать Stream API вместо циклов
+// TODO Что такое тип K? Где он используется?
 public class MyHashMap<K, V extends Comparable> implements IntMap<V> {
 	private List<IntEntry<V>> list;
 	private int size;
@@ -12,6 +15,8 @@ public class MyHashMap<K, V extends Comparable> implements IntMap<V> {
 	MyHashMap() {
 		size = 16;
 		list = new ArrayList<>(size);
+		// TODO
+		// Лишнее. Уже сделано при декларации
 		for(int i = 0; i < size; i++) {
 			list.add(null);
 		}
@@ -72,11 +77,13 @@ public class MyHashMap<K, V extends Comparable> implements IntMap<V> {
 
 	}
 
+	// TODO Нужно вернуть все элементы структуры данных
 	@Override
 	public Set<IntEntry<Person>> entrySet() {
 		return null;  // I don't understand what needs to be done
 	}
 
+	// TODO Почему здесь Object? И зачем вызывать метод hashCode на Integer
 	private int getKey(Object key) {
 		return Math.abs(key.hashCode() % size); // encrypt the key
 	}
