@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-// TODO Итоговое заключение:
-// 1. Все конечно прекрасно, но что будет если 2 ключа имеют одинаковый хэш
-// 2. Попробуй использовать Stream API вместо циклов
-// TODO Что такое тип K? Где он используется?
+
+
 public class MyHashMap<V extends Comparable> implements IntMap<V> {
+	// TODO попробуй использовать Array
 	private ArrayList<LinkedList<IntEntry<V>>> buckets;
 	private double	loadFactory = 0.75;
 	private int		capacity = 16;
@@ -46,6 +45,7 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
 	@Override
 	public V put(int i, V value) {
 	    LinkedList<IntEntry<V>> bucket = buckets.get(indexFor(i, capacity));
+	    // TODO использовать итератор
         if (bucket.isEmpty()) {
             bucket.add(new IntEntry<>(i, value));
             increaseSize();
@@ -53,6 +53,7 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
         else {
 			for (IntEntry<V> e: bucket) {
 				if (e.getKey() == i) {
+					// TODO крайне неэффективно
 					bucket.remove(e);
 					decreaseSize();
 				}
@@ -77,7 +78,8 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
 	@Override
 	public V remove(int i) {
 	    LinkedList<IntEntry<V>> bucket = buckets.get(indexFor(i, capacity));
-        if (!bucket.isEmpty()) {
+        // TODO лишняя проверка
+	    if (!bucket.isEmpty()) {
             for (IntEntry<V> e: bucket) {
                 if (e.getKey() == i) {
                     buckets.remove(i);
@@ -113,7 +115,8 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
 	public boolean containsValue(V o) {
         for (LinkedList<IntEntry<V>> bucket : buckets) {
             for (IntEntry<V> e: bucket) {
-                if (e.getValue() == o) {
+            	// TODO лучше все же использовать equals
+                if (e.getValue().equals(o)) {
                     return true;
                 }
             }
@@ -128,7 +131,6 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
         size = 0;
 	}
 
-	// TODO Нужно вернуть все элементы структуры данных
 	@Override
 	public Set<IntEntry<Person>> entrySet() {
 		Set<IntEntry<Person>> set = new HashSet<>();
