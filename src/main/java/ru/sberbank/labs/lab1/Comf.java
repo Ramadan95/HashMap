@@ -1,19 +1,16 @@
 package ru.sberbank.labs.lab1;
 
-import java.rmi.MarshalException;
 import java.util.Random;
-import java.util.Timer;
-import java.util.stream.Stream;
 
 class Comf {
 	// TODO
 	private static final Person[] Nil = new Person[0];
 
-	Person[] generatePerson() {
+	Person[] generatePerson(int size) {
 		// TODO
 		// Этот экземпляр создается каждый раз при вызове метода. Непрактично и неудобно. Используй static.
 		// Person[]	Nil = new Person[0];
-		Person[]	person = new Person[100000];
+		Person[] person = new Person[size];
 		// TODO
 		// Непрактичное использование памяти. Нет никакой необходимости сохранять эти данные в массиве.
 		// я хотел видеть firstname = {"Иван", "Петр", ...} lastname = {"Иванов", "Петров", ...}
@@ -43,12 +40,6 @@ class Comf {
 
 	// TODO Крайне непрактичная реализация. Подумать и переделать.
 	private int getRandomNumberInRange(int min, int max) {
-//		return (int) (min + Math.random() * (max - min + 1));
-		Random r = new Random();
-		return r.ints(min, (max + 1)).limit(1).findFirst().getAsInt();
-	}
-
-	public static void main(String[] args){
-
+		return (int) (min + Math.random() * (max - min + 1));
 	}
 }

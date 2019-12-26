@@ -6,9 +6,10 @@ public class EntryPoint {
 
     public static void main(String[] args) {
     	Comf comf = new Comf();
+    	int size = 100000;
         // 1. Реализуйте интерфейс Comparable в классе Person
 //         2. Создайте массив Person размерностью 100_000
-		Person[] person = new Person[100000];
+		Person[] person;
         // 3. Сгенерируйте 100_000 экземпляров Person с помощью генератора случайных чисел
 		Random rand = new Random();
         // Для случайной генерации строковых данных в читаемом виде можно использовать
@@ -19,23 +20,25 @@ public class EntryPoint {
 		// В Java это дурной тон
 		// Зачем обернул Arrays.asList в ArrayList? В чем смысл этого действия? TODO Почему-то прочитал, что это по Т3 надо сделать
 //		ArrayList<Person> arrayPerson = new ArrayList<>(Arrays.asList(comf.generatePerson()));
-
-		person = comf.generatePerson();
+		person = comf.generatePerson(size);
 //         5. Создайте массив Long размерностью 100_000
 		int[] integers = new int[person.length];
         // 6. Сгенерируйте 100_000 уникальных случайных чисел в диапазоне (Long.MAX_VALUE, Long.MAX_VALUE)
 		Set<Integer> setInt = new HashSet<>();
+		int random;
 		while (setInt.size() != person.length) {
-			setInt.add(comf.getRandomNumberInRange(Integer.MIN_VALUE, Integer.MAX_VALUE - 1));
+			random = rand.nextInt(Integer.MAX_VALUE) - (rand.nextInt(Integer.MAX_VALUE) - 1);
+			setInt.add(random);
 		}
 
 		int q = 0;
 		for (Integer integer : setInt) {
 			integers[q++] = integer;
 		}
-//        // Используйте Set<Integer> для обеспечения уникальности создаваемых чисел
+//        // И
+//        спользуйте Set<Integer> для обеспечения уникальности создаваемых чисел
 //        // 7. Создайте экземпляры HashMap и TreMap
-        Map<Integer, Person> hashMap = new HashMap<>(100000, 1);
+        Map<Integer, Person> hashMap = new HashMap<>(size, 1);
         Map<Integer, Person> treeMap = new TreeMap<>();
 //        // 8. Используя созданный массив Integer[] и Person[] поместите
 //        // данные в созданные структуры, измерьте время, затраченное на запись данных для TreeMap и HashMap
@@ -58,7 +61,6 @@ public class EntryPoint {
 		for (int j = 0; j < hashMap.size(); j++) {
 			hashMap.get(integers[j]);
 		}
-		System.out.println(hashMap.size());
 		System.out.println("HashMap read time test: " + (double) (System.currentTimeMillis() - m));
 
 		m = System.currentTimeMillis();
@@ -68,59 +70,27 @@ public class EntryPoint {
 		System.out.println("TreeMap read time test: " + (double) (System.currentTimeMillis() - m));
 
 		System.out.println("------------------------------------");
-
-		MyHashMap<Person> myHashMap = new MyHashMap<>();
-		m = System.currentTimeMillis();
-//		for (int j = 0; j < person.length; j++) {
-//			myHashMap.put(integers[j], person[j]);
-//		}
-		System.out.println("MyHashMap add time test: " + (double) (System.currentTimeMillis() - m));
-
-//		m = System.currentTimeMillis();
-//		for (int j = 0; j < person.length; j++) {
-//			myHashMap.get(integers[j]);
-//		}
-//		System.out.println("MyHashMap read time test: " + (double) (System.currentTimeMillis() - m));
-
-		System.out.println("The end of time check!");
-//		System.out.println(myHashMap.size());
-//		for (int i = 0; i < person.length; i++) {
-//			System.out.println(person[i]);
-//		}
-
-		Map<Integer, Person> hash = new HashMap<>();
-//
-		myHashMap.put(1, person[0]);
-		myHashMap.put(1, person[1]);
-		myHashMap.put(1, person[2]);
-		myHashMap.put(1, person[3]);
-		myHashMap.put(1, person[4]);
-//
-		hash.put(1, person[0]);
-		hash.put(1, person[1]);
-		hash.put(1, person[2]);
-		hash.put(1, person[3]);
-		hash.put(1, person[4]);
-//
-		for (int i = 0; i < 5; i++) {
-			System.out.println(myHashMap.get(i));
-		}
-		System.out.println("------------------------------------");
-		for (int i = 0; i < hash.size(); i++) {
-			System.out.println(hash.get(i));
-		}
-
         // 10. Улучшите показатели HashMap на запись, изучив доступные конструкторы HashMap
 		// (Capacity:people.len, loadFactor:1) хеширование не произойдет
         // 11. Создайте свою собственную структуру данных, реализовав интерфейс IntMap
         // Изучите реализацию соответствующих методов в стандартной реализации HashMap, используйте их
         // как руководство к действию.
+		MyHashMap<Person> myHashMap = new MyHashMap<>();
+		m = System.currentTimeMillis();
+		for (int j = 0; j < person.length; j++) {
+			myHashMap.put(integers[j], person[j]);
+		}
+		System.out.println("MyHashMap add time test: " + (double) (System.currentTimeMillis() - m));
+
+		m = System.currentTimeMillis();
+		for (int j = 0; j < myHashMap.size(); j++) {
+			myHashMap.get(integers[j]);
+		}
+		System.out.println("MyHashMap read time test: " + (double) (System.currentTimeMillis() - m));
         // 12. Измерьте производительность созданной структуры данных.
-
+		System.out.println("The end of time check!");
         // P.S. Опционально: реализовать все измерительные процедуры в junit тестах
-
     }
-
 }
 
 
