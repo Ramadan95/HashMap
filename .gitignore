@@ -5,3 +5,4 @@ gradlew
 gradlew.bat
 agent/build
 build
+/src/main/java/ru/sberbank/labs/lab1/Tests.java

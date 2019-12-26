@@ -1,10 +1,13 @@
 package ru.sberbank.labs.lab1;
 
+import java.rmi.MarshalException;
 import java.util.Random;
+import java.util.Timer;
+import java.util.stream.Stream;
 
 class Comf {
 	// TODO
-	public static final Person[] Nil = new Person[0];
+	private static final Person[] Nil = new Person[0];
 
 	Person[] generatePerson() {
 		// TODO
@@ -15,32 +18,37 @@ class Comf {
 		// Непрактичное использование памяти. Нет никакой необходимости сохранять эти данные в массиве.
 		// я хотел видеть firstname = {"Иван", "Петр", ...} lastname = {"Иванов", "Петров", ...}
 		// и случайный выбор из этих массивов
-		String[]	firstname = new String[person.length];
-		String[]	lastname = new String[person.length];
+		String[] firstname = {"Константин", "Петр", "Никита", "Александр",
+						"Кирилл", "Даниил", "Сергей", "Георгий", "Саша", "Герман"};
+		String[]	lastname = {"Овчинников", "Ермаков", "Алексеев", "Шарапов",
+				"Тимофеев", "Зюганов", "Матвеев", "Трифонов", "Федотов", "Афанасьев"};
 
 		Random 		rand = new Random();
 		Person[]	children;
 
-		// TODO перенести генерацию этих данных в место использования (см. выше)
-		for (int i = 0; i < person.length; i++) {
-			firstname[i] = "first" + rand.nextInt(1000000) + "name:" + i;
-			lastname[i] = "last" + rand.nextInt(1000000) + "name:" + i;
-		}
+//		// TODO перенести генерацию этих данных в место использования (см. выше)
+
 
 		for (int i = 0; i < person.length; i++) {
 			// TODO Хотелось бы чтоб детей было от 0 до 3
-			children = new Person[1];
+			children = new Person[rand.nextInt(10)];
 			for (int j = 0; j < children.length; j++) {
-				children[j] = new Person(rand.nextInt(10), "first" + rand.nextInt(1000000) + "name:" + i, "last" + rand.nextInt(1000000) + "name:" + i, Nil);
+				children[j] = new Person(rand.nextInt(10), firstname[rand.nextInt(10)], lastname[rand.nextInt(10)], Nil);
 			}
-			person[i] = new Person(rand.nextInt(), firstname[i], lastname[i], children);
+			person[i] = new Person(getRandomNumberInRange(18 + children.length * 3, 60), firstname[rand.nextInt(10)], lastname[rand.nextInt(10)], children);
 		}
 		return person;
 	}
 
+
 	// TODO Крайне непрактичная реализация. Подумать и переделать.
-	int getRandomNumberInRange(int min, int max) {
+	private int getRandomNumberInRange(int min, int max) {
+//		return (int) (min + Math.random() * (max - min + 1));
 		Random r = new Random();
 		return r.ints(min, (max + 1)).limit(1).findFirst().getAsInt();
+	}
+
+	public static void main(String[] args){
+
 	}
 }

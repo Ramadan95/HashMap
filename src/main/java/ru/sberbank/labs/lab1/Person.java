@@ -2,7 +2,7 @@ package ru.sberbank.labs.lab1;
 
 import java.util.Arrays;
 
-public final class Person implements Comparable<Person> {
+public final class Person implements Comparable {
     private final int age;
     private final String firstName;
     private final String lastName;
@@ -32,7 +32,8 @@ public final class Person implements Comparable<Person> {
     }
 
     @Override
-	public int compareTo(Person person) {
+	public int compareTo(Object o) {
+    	Person person = (Person) o;
 		int result = this.firstName.compareTo(person.firstName);
 		if (result == 0) result = this.lastName.compareTo(person.lastName);
 		if (result == 0) result = this.age - person.age;

@@ -1,75 +1,96 @@
 package ru.sberbank.labs.lab1;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Set;
 // TODO Итоговое заключение:
 // 1. Все конечно прекрасно, но что будет если 2 ключа имеют одинаковый хэш
 // 2. Попробуй использовать Stream API вместо циклов
-// TODO Что такое тип K? Где он используется?
-public class MyHashMap<K, V extends Comparable> implements IntMap<V> {
-	private List<IntEntry<V>> list;
-	private int size;
+// TODO Что такое тип K? Где он используется? TODO Дженерик, который будет заменен на тип, который подадут --//-- Написал по привычне, забыв, что у нас ключ всегда int
+public class MyHashMap<V extends Comparable> implements IntMap<V> {
+	private float loadfactor = 0.75f;
+	private int capacity = 100;
+	private int size = 0;
+	private IntEntry<V> buckets[] = new IntEntry[capacity];
 
-	MyHashMap() {
-		size = 16;
-		list = new ArrayList<>(size);
-		// TODO
-		// Лишнее. Уже сделано при декларации
-		for(int i = 0; i < size; i++) {
-			list.add(null);
-		}
+	private int hashing(int hashCode) {
+		int location = hashCode % capacity;
+//		System.out.println("Location:"+location);
+		return location;
 	}
 
 	@Override
 	public V get(int i) {
-		int index = getKey(i);
-		IntEntry<V> entry = list.get(index);
-		return entry != null ? list.get(index).getValue() : null;
+		V ret = null;
+		int location = hashing(hashCode());
+		IntEntry<V> e = null;
+		try{
+			e = buckets[location];
+		}catch(NullPointerException ex) {
+			ex.getMessage();
+		}
+		if(e!= null && e.getKey() == i) {
+			return e.getValue();
+		}
+		return ret;
 	}
 
 	@Override
 	public V put(int key, V value) {
-		int index = getKey(key);
-		IntEntry<V> entry = new IntEntry<>(key, value);
-		list.add(index, entry);
-		return value;
+		V ret = null;
+		int location = hashing(hashCode() % key);
+		if (location >= capacity) {
+			System.out.println("Rehashing required");
+			return null;
+		}
+		IntEntry<V> e = null;
+		try {
+			e = buckets[location];
+		} catch (NullPointerException ex) {
+
+		}
+		if (e != null && e.getKey() == key) {
+			ret = e.getValue();
+		} else {
+			IntEntry<V> eNew = new IntEntry<>(key, value);
+			buckets[location] = eNew;
+			size++;
+		}
+		return ret;
 	}
 
 	@Override
 	public V remove(int i) {
-		int index = getKey(i);
-		list.add(index, null);
 		return null;
 	}
 
 	@Override
 	public int size() {
-		return list.size();
+		return this.size;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return list.isEmpty();
+//		if (this.size == 0) {
+//			return true;
+//		}
+//		return false;
+		return ((this.size == 0) ? true : false);
 	}
 
 	@Override
 	public boolean containsKey(int i) {
-		int index = getKey(i);
-		return list.get(index) != null;
+		return true;
 	}
 
 	@Override
-	public boolean containsValue(V o) {
-		boolean result = false;
-		for(int i = 0; i < size; i++) {
-			if (list.get(i) != null && list.get(i).getValue() == o) {
-				result = true;
-				break;
+	public boolean containsValue(V value) {
+		for(int i = 0; i < buckets.length; i++) {
+			if (buckets[i] != null && buckets[i].getValue() == value) {
+				return true;
 			}
 		}
-		return result;
+		return false;
 	}
 
 	@Override
@@ -77,14 +98,8 @@ public class MyHashMap<K, V extends Comparable> implements IntMap<V> {
 
 	}
 
-	// TODO Нужно вернуть все элементы структуры данных
 	@Override
 	public Set<IntEntry<Person>> entrySet() {
-		return null;  // I don't understand what needs to be done
-	}
-
-	// TODO Почему здесь Object? И зачем вызывать метод hashCode на Integer
-	private int getKey(Object key) {
-		return Math.abs(key.hashCode() % size); // encrypt the key
+		return null;
 	}
 }
