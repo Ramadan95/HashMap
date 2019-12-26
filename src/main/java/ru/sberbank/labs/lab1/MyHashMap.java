@@ -1,10 +1,7 @@
 package ru.sberbank.labs.lab1;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 
 public class MyHashMap<V extends Comparable> implements IntMap<V> {
@@ -44,25 +41,44 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
 
 	@Override
 	public V put(int i, V value) {
-	    LinkedList<IntEntry<V>> bucket = buckets.get(indexFor(i, capacity));
-	    // TODO использовать итератор
-        if (bucket.isEmpty()) {
-            bucket.add(new IntEntry<>(i, value));
-            increaseSize();
-        }
-        else {
-			for (IntEntry<V> e: bucket) {
-				if (e.getKey() == i) {
-					// TODO крайне неэффективно
-					bucket.remove(e);
-					decreaseSize();
-				}
-			}
+		LinkedList<IntEntry<V>> bucket = buckets.get(indexFor(i, capacity));
+		Iterator<IntEntry<V>> iterator = bucket.iterator();
+		if (!iterator.hasNext()) {
 			bucket.add(new IntEntry<>(i, value));
 			increaseSize();
+		} else {
+			while (iterator.hasNext()) {
+				IntEntry<V> e = iterator.next();
+				if (e.getKey() == i) {
+					iterator.remove();
+					decreaseSize();
+					break;
+				}
+				bucket.add(new IntEntry<>(i, value));
+				increaseSize();
+			}
 		}
-        return value;
+			return value;
 	}
+	    // TODO использовать итератор
+//        if (bucket.isEmpty()) {
+//            bucket.add(new IntEntry<>(i, value));
+//            increaseSize();
+//        }
+//        else {
+//			for (IntEntry<V> e: bucket) {
+//				if (e.getKey() == i) {
+//					// TODO крайне неэффективно
+//					bucket.remove(e);
+//					decreaseSize();
+//					break;
+//				}
+//			}
+//			bucket.add(new IntEntry<>(i, value));
+//			increaseSize();
+//		}
+//        return value;
+//	}
 
 	@Override
 	public V get(int key) {
@@ -79,13 +95,11 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
 	public V remove(int i) {
 	    LinkedList<IntEntry<V>> bucket = buckets.get(indexFor(i, capacity));
         // TODO лишняя проверка
-	    if (!bucket.isEmpty()) {
-            for (IntEntry<V> e: bucket) {
-                if (e.getKey() == i) {
-                    buckets.remove(i);
-                    size--;
-                }
-            }
+		for (IntEntry<V> e: bucket) {
+			if (e.getKey() == i) {
+				buckets.remove(i);
+				size--;
+			}
         }
 		return bucket.get(indexFor(i, capacity)).getValue();
 	}
@@ -116,14 +130,13 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
         for (LinkedList<IntEntry<V>> bucket : buckets) {
             for (IntEntry<V> e: bucket) {
             	// TODO лучше все же использовать equals
-                if (e.getValue().equals(o)) {
+                if (e.equals(o)) {
                     return true;
                 }
             }
         }
 		return false;
 	}
-
 
 	@Override
 	public void clear() {

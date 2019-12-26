@@ -1,5 +1,7 @@
 package ru.sberbank.labs.lab1;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
 class Comf {
@@ -28,4 +30,5 @@ class Comf {
 	private int getRandomNumberInRange(int min, int max) {
 		return (int) (min + Math.random() * (max - min + 1));
 	}
+
 }
