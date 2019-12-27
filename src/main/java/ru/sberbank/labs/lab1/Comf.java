@@ -1,8 +1,6 @@
 package ru.sberbank.labs.lab1;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
 class Comf {
 
@@ -30,5 +28,22 @@ class Comf {
 	private int getRandomNumberInRange(int min, int max) {
 		return (int) (min + Math.random() * (max - min + 1));
 	}
+
+    int[] generateIntegers(int size) {
+        int[] integers = new int[size];
+        // 6. Сгенерируйте 100_000 уникальных случайных чисел в диапазоне (Long.MAX_VALUE, Long.MAX_VALUE)
+        Set<Integer> setInt = new HashSet<>();
+        int random;
+        while (setInt.size() != size) {
+            random = rand.nextInt(Integer.MAX_VALUE) - (rand.nextInt(Integer.MAX_VALUE) - 1);
+            setInt.add(random);
+        }
+
+        int q = 0;
+        for (Integer integer : setInt) {
+            integers[q++] = integer;
+        }
+        return integers;
+    }
 
 }

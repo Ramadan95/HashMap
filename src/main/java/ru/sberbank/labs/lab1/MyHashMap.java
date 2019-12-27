@@ -5,80 +5,62 @@ import java.util.*;
 
 
 public class MyHashMap<V extends Comparable> implements IntMap<V> {
-	// TODO попробуй использовать Array
-	private ArrayList<LinkedList<IntEntry<V>>> buckets;
-	private double	loadFactory = 0.75;
-	private int		capacity = 16;
-	private int		size = 0;
-	private int		threshold;
+    // TODO попробуй использовать Array
+    private ArrayList<LinkedList<IntEntry<V>>> buckets;
+    private double loadFactory = 0.75;
+    private int capacity = 16;
+    private int size = 0;
+    private int threshold;
 
-	MyHashMap() {
-		buckets = new ArrayList<>(capacity);
-		threshold = (int) (capacity * loadFactory);
-		for (int i = 0; i < capacity; i++) {
-			buckets.add(new LinkedList<>());
-		}
-	}
-
-	MyHashMap(int capacity) {
-		this.capacity = capacity;
-		threshold = (int) (capacity * loadFactory);
+    MyHashMap() {
         buckets = new ArrayList<>(capacity);
-		for (int i = 0; i < capacity; i++) {
-			buckets.add(new LinkedList<>());
-		}
-	}
+        threshold = (int) (capacity * loadFactory);
+        for (int i = 0; i < capacity; i++) {
+            buckets.add(new LinkedList<>());
+        }
+    }
 
-	MyHashMap(int capacity, double loadFactory) {
-		this.capacity = capacity;
-		this.loadFactory = loadFactory;
-		threshold = (int) (capacity * loadFactory);
+    MyHashMap(int capacity) {
+        this.capacity = capacity;
+        threshold = (int) (capacity * loadFactory);
         buckets = new ArrayList<>(capacity);
-		for (int i = 0; i < capacity; i++) {
-			buckets.add(new LinkedList<>());
-		}
-	}
+        for (int i = 0; i < capacity; i++) {
+            buckets.add(new LinkedList<>());
+        }
+    }
 
-	@Override
-	public V put(int i, V value) {
-		LinkedList<IntEntry<V>> bucket = buckets.get(indexFor(i, capacity));
-		Iterator<IntEntry<V>> iterator = bucket.iterator();
+    MyHashMap(int capacity, double loadFactory) {
+        this.capacity = capacity;
+        this.loadFactory = loadFactory;
+        threshold = (int) (capacity * loadFactory);
+        buckets = new ArrayList<>(capacity);
+        for (int i = 0; i < capacity; i++) {
+            buckets.add(new LinkedList<>());
+        }
+    }
+
+    @Override
+    public V put(int i, V value) {
+        LinkedList<IntEntry<V>> bucket = buckets.get(indexFor(i, capacity));
+		ListIterator<IntEntry<V>> iterator = bucket.listIterator();
+//      TODO использовать итератор
 		if (!iterator.hasNext()) {
-			bucket.add(new IntEntry<>(i, value));
+			iterator.add(new IntEntry<>(i, value));
 			increaseSize();
 		} else {
 			while (iterator.hasNext()) {
 				IntEntry<V> e = iterator.next();
 				if (e.getKey() == i) {
-					iterator.remove();
+                    iterator.remove();
 					decreaseSize();
 					break;
 				}
-				bucket.add(new IntEntry<>(i, value));
-				increaseSize();
 			}
+			iterator.add(new IntEntry<>(i, value));
+			increaseSize();
 		}
-			return value;
+		return value;
 	}
-	    // TODO использовать итератор
-//        if (bucket.isEmpty()) {
-//            bucket.add(new IntEntry<>(i, value));
-//            increaseSize();
-//        }
-//        else {
-//			for (IntEntry<V> e: bucket) {
-//				if (e.getKey() == i) {
-//					// TODO крайне неэффективно
-//					bucket.remove(e);
-//					decreaseSize();
-//					break;
-//				}
-//			}
-//			bucket.add(new IntEntry<>(i, value));
-//			increaseSize();
-//		}
-//        return value;
-//	}
 
 	@Override
 	public V get(int key) {
