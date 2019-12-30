@@ -1,8 +1,6 @@
 package ru.sberbank.labs.lab1;
 
-
 import java.util.*;
-
 
 public class MyHashMap<V extends Comparable> implements IntMap<V> {
     // TODO попробуй использовать Array
@@ -44,21 +42,11 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
         LinkedList<IntEntry<V>> bucket = buckets.get(indexFor(i, capacity));
 		ListIterator<IntEntry<V>> iterator = bucket.listIterator();
 //      TODO использовать итератор
-		if (!iterator.hasNext()) {
-			iterator.add(new IntEntry<>(i, value));
-			increaseSize();
-		} else {
-			while (iterator.hasNext()) {
-				IntEntry<V> e = iterator.next();
-				if (e.getKey() == i) {
-                    iterator.remove();
-					decreaseSize();
-					break;
-				}
-			}
-			iterator.add(new IntEntry<>(i, value));
-			increaseSize();
+		if (!bucket.isEmpty()) {
+			remove(i);
 		}
+		iterator.add(new IntEntry<>(i, value));
+		increaseSize();
 		return value;
 	}
 
@@ -79,11 +67,12 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
         // TODO лишняя проверка
 		for (IntEntry<V> e: bucket) {
 			if (e.getKey() == i) {
-				buckets.remove(i);
+				bucket.remove(e);
 				size--;
+				break;
 			}
         }
-		return bucket.get(indexFor(i, capacity)).getValue();
+		return null;
 	}
 
 	@Override
@@ -109,10 +98,10 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
 
 	@Override
 	public boolean containsValue(V o) {
-        for (LinkedList<IntEntry<V>> bucket : buckets) {
+        for (LinkedList<IntEntry<V>> bucket : this.buckets) {
             for (IntEntry<V> e: bucket) {
             	// TODO лучше все же использовать equals
-                if (e.equals(o)) {
+                if (o.compareTo(e.getValue()) == 0) {
                     return true;
                 }
             }
@@ -157,16 +146,16 @@ public class MyHashMap<V extends Comparable> implements IntMap<V> {
 		for (int i = 0; i < newCapacity; i++) {
 			newBuckets.add(new LinkedList<>());
 		}
-		transfer(newBuckets);
-		this.buckets = newBuckets;
+		transfer(newBuckets, newCapacity);
 		this.capacity = newCapacity;
+		this.buckets = newBuckets;
 		this.threshold = (int)(newCapacity * loadFactory);
 	}
 
-	private void transfer(ArrayList<LinkedList<IntEntry<V>>> newBuckets) {
-		for (LinkedList<IntEntry<V>> bucket : newBuckets) {
+	private void transfer(ArrayList<LinkedList<IntEntry<V>>> newBuckets, int newSize) {
+		for (LinkedList<IntEntry<V>> bucket : buckets) {
 			for (IntEntry<V> e: bucket) {
-				int index = indexFor(e.getKey(), newBuckets.size());
+				int index = indexFor(e.getKey(), newSize);
 				newBuckets.get(index).add(e);
 			}
 		}

@@ -16,106 +16,62 @@ public class MyHashMapTest {
             assertEquals(i, map.size());
             map.put(i, i);
         }
+        map.remove(5);
+        assertEquals(999, map.size());
     }
 
     @Test
     public void put() {
-        MyHashMap<Integer> myMap = new MyHashMap<>(4);
-        HashMap<Integer, Integer> map = new HashMap<>(4);
+        MyHashMap<Integer> myMap = new MyHashMap<>();
 
-        map.put(1, 1);
-        map.put(2, 3);
-        map.put(3, 5);
-        map.put(4, 4);
-        map.put(3, 7);
+        for (int i = 0; i < 100; i++) {
+            myMap.put(i, i);
+        }
 
-        myMap.put(1, 1);
-        myMap.put(2, 3);
-        myMap.put(3, 5);
-        myMap.put(4, 4);
-        myMap.put(3, 7);
-
-        assertTrue(map.entrySet().containsAll(myMap.entrySet()));
+        for (int i = 0; i < 100; i++) {
+            assertEquals(i, (int)myMap.get(i));
+        }
     }
 
 
     @Test
     public void get() {
-        MyHashMap<Integer> myMap = new MyHashMap<>(4);
-        HashMap<Integer, Integer> map = new HashMap<>(4);
+        MyHashMap<Integer> myMap = new MyHashMap<>();
 
-        map.put(1, 1);
-        map.put(2, 3);
-        map.put(3, 5);
-        map.put(4, 4);
-        map.put(3, 7);
+        for (int i = 0; i < 100; i++) {
+            myMap.put(i, i);
+        }
 
-        myMap.put(1, 1);
-        myMap.put(2, 3);
-        myMap.put(3, 5);
-        myMap.put(4, 4);
-        myMap.put(3, 7);
-
-        map.remove(1);
-        map.remove(2);
-        map.remove(4);
-
-        myMap.remove(1);
-        myMap.remove(2);
-        myMap.remove(4);
-
-        assertEquals(map.get(2), map.get(2));
+        for (int i = 0; i < 100; i++) {
+            assertEquals(i, (int)myMap.get(i));
+        }
     }
 
     @Test
     public void remove() {
         MyHashMap<Integer> myMap = new MyHashMap<>(4);
-        HashMap<Integer, Integer> map = new HashMap<>(4);
 
-        map.put(1, 1);
-        map.put(2, 3);
-        map.put(3, 5);
-        map.put(4, 4);
-        map.put(3, 7);
+        for (int i = 0; i < 100; i++) {
+            myMap.put(i,i);
+        }
 
-        myMap.put(1, 1);
-        myMap.put(2, 3);
-        myMap.put(3, 5);
-        myMap.put(4, 4);
-        myMap.put(3, 7);
+        for (int i = 0; i < 100; i++) {
+            myMap.remove(i);
+        }
 
-        map.remove(1);
-        map.remove(2);
-        map.remove(4);
-
-        myMap.remove(1);
-        myMap.remove(2);
-        myMap.remove(4);
-
-        assertTrue(map.entrySet().containsAll(myMap.entrySet()));
+        assertTrue(myMap.isEmpty());
     }
 
     @Test
     public void clear() {
         MyHashMap<Integer> myMap = new MyHashMap<>(4);
-        HashMap<Integer, Integer> map = new HashMap<>(4);
 
-        map.put(1, 1);
-        map.put(2, 3);
-        map.put(3, 5);
-        map.put(4, 4);
-        map.put(3, 7);
-
-        myMap.put(1, 1);
-        myMap.put(2, 3);
-        myMap.put(3, 5);
-        myMap.put(4, 4);
-        myMap.put(3, 7);
-
-        map.clear();
+        for (int i = 0; i < 100; i++) {
+            myMap.put(i,i);
+        }
         myMap.clear();
 
-        assertTrue(map.entrySet().containsAll(myMap.entrySet()));
+        assertTrue(myMap.isEmpty());
     }
 
 
